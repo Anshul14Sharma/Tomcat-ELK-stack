@@ -51,7 +51,7 @@ https://www.elastic.co/downloads/beats/filebeat
 ##### CONFIGURING FILEBEAT TO SEND LOGS LINES TO LOGSTASH:  #####
 * Go to the filebeat directory:  
     ``cd filebeat-6.2.4``  
-* edit the filebeat.yml configuration file with the following:  
+* edit the ``filebeat.yml`` configuration file with the following:  
     ``nano filebeat.yml``  
 * Save your changes.  
 * At the data source machine, run Filebeat with the following command:  
@@ -90,10 +90,10 @@ you will see the following output:
 [grok-pattens](https://raw.githubusercontent.com/Anshul14Sharma/Tomcat-ELK-stack/master/grok-patterns.txt)  
 * To verify your configuration, run the following command:  
 ``./bin/logstash -f first_pipeline.conf –config.test_and_exit``  
-* The –config.test_and_exit option parses your configuration file and reports any errors.  
+* The ``–config.test_and_exit`` option parses your configuration file and reports any errors.  
 * If the configuration file passes the configuration test, start Logstash with the following command:  
 ``./bin/logstash -f first_pipeline.conf –config.reload.automatic``  
-* The –config.reload.automatic option enables automatic config reloading so that you don’t have to stop and restart Logstash every time you modify the configuration file.  
+* The ``–config.reload.automatic`` option enables automatic config reloading so that you don’t have to stop and restart Logstash every time you modify the configuration file.  
 
 ##### STEP 5: #####  
 ##### Configure elasticsearch:  #####
@@ -101,10 +101,12 @@ you will see the following output:
 ``cd elasticsearch-6.2.4/config``  
 ``nano elasticsearch.yml``  
 * Edit the following lines to the file:  
-`` cluster.name: Vega # Cluster name for your elasticsearch  
+```json
+ cluster.name: Vega # Cluster name for your elasticsearch  
  node.name: Virgo # Node name for your elasticsearch  
  network.host: localhost  
- http:port: 9200``
+ http:port: 9200  
+```  
 * Save your changes.  
 * Run elasticsearch using:  
 ``./bin/elasticsearh``  
@@ -133,9 +135,11 @@ you will see the following output:
 * Open config/kibana.yml in an editor  
 ``nano config/kibana.yml``  
 * Edit file with the following lines:  
-``elasticsearch.url: "http://localhost:9200"  
+```json
+elasticsearch.url: "http://localhost:9200"  
 elasticsearch.username: "elastic"  
-elasticsearch.password: "elastic"``  
+elasticsearch.password: "elastic"  
+```  
 * Save your changes.  
 * Run kibana using:  
 ``./bin/kibana``  
