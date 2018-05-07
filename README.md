@@ -56,6 +56,7 @@ https://www.elastic.co/downloads/beats/filebeat
 * Save your changes.  
 * At the data source machine, run Filebeat with the following command:  
 ``./filebeat -e -c filebeat.yml ``  
+* [filebeat.yml](https://raw.githubusercontent.com/Anshul14Sharma/Tomcat-ELK-stack/master/filebeat.yml)
 * Filebeat will attempt to connect on port 5044. Until Logstash starts with an active Beats plugin, there won’t be any answer on that port, so any messages you see regarding failure to connect on that port are normal for now.  
 * Filebeat stores the state of each file it harvests in the registry. However, if you do need to force Filebeat to read the log file from   scratch. To do this, go to the terminal window where Filebeat is running and press Ctrl+C to shut down Filebeat. Then delete the Filebeat   registry file. For example, run:  
 ``sudo rm data/registry``  
