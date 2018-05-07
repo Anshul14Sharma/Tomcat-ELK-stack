@@ -30,7 +30,7 @@ https://www.elastic.co/downloads/kibana
 https://www.elastic.co/downloads/beats/filebeat
 
 ##### STEP 2: #####
-* INSTALL X-PACK INTO ELASTICSEARCH:  
+##### INSTALL X-PACK INTO ELASTICSEARCH:  #####  
 * Go to the elasticsearch folder:  
  ``./bin/elasticsearch-plugin install x-pack``  
 * Start Elasticsearch:  
@@ -38,7 +38,7 @@ https://www.elastic.co/downloads/beats/filebeat
 * Generate default passwords:  
 ``./bin/x-pack/setup-passwords interactive``  
 * Note the passwords for elastic and kibana users.  
-* INSTALL X-PACK INTO KIBANA:  
+##### INSTALL X-PACK INTO KIBANA: #####
 * Go to the kibana folder:  
 ``./bin/kibana-plugin install x-pack``  
 * Add credentials to the kibana.yml file:  
@@ -48,23 +48,11 @@ https://www.elastic.co/downloads/beats/filebeat
 * Start kibana:  
 ``./bin/kibana``  
 ##### STEP 3: #####
-* CONFIGURING FILEBEAT TO SEND LOGS LINES TO LOGSTASH:  
+##### CONFIGURING FILEBEAT TO SEND LOGS LINES TO LOGSTASH:  #####
 * Go to the filebeat directory:  
     ``cd filebeat-6.2.4``  
 * edit the filebeat.yml configuration file with the following:  
     ``nano filebeat.yml``  
-``filebeat.prospectors:  
-  type: log  
-  enabled: true  
-  paths:  
-  -/var/log/*.log # Absolute path to the file or files from where you want to import logs into logstash.  
-  ##Multiline options  
-  multiline.pattern: ^[0-9]{2}-(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Sept|Oct (?:ober)?|Nov(?:ember)?|Dec(?:ember)?)-[0-9]{4} (this will match the timestamp, which is begininng of every newline)  
-  multiline.negate: true  
-  multiline.match: after  
-  #--------------------Logsatsh output--------------------------  
-  output.logstash:  
-	hosts: ["localhost:5044"]``
 * Save your changes.  
 * At the data source machine, run Filebeat with the following command:  
 ``./filebeat -e -c filebeat.yml ``  
@@ -73,7 +61,7 @@ https://www.elastic.co/downloads/beats/filebeat
 ``sudo rm data/registry``  
 Or take help about multiline option from [filebeat multiline.](https://www.elastic.co/guide/en/beats/filebeat/current/multiline-examples.html)  
 ##### STEP 4: #####
-* STASHING YOUR FIRST EVENT:  
+##### STASHING YOUR FIRST EVENT:  #####
 First, let’s test your Logstash installation by running the most basic Logstash pipeline.  
 A Logstash pipeline has two required elements,input and output, and one optional element, filter. The input plugins consume data from a   source, the filter plugins modify the data as you specify, and the output plugins write the data to a destination.  
 To test your Logstash installation, run the most basic Logstash pipeline. For example:  
@@ -105,13 +93,13 @@ you will see the following output:
 * The –config.reload.automatic option enables automatic config reloading so that you don’t have to stop and restart Logstash every time you modify the configuration file.  
 
 ##### STEP 5: #####  
-* Configure elasticsearch:  
+##### Configure elasticsearch:  #####
 * Go to config folder of elasticsearch  
 ``cd elasticsearch-6.2.4/config``  
 ``nano elasticsearch.yml``  
 * Edit the following lines to the file:  
 `` cluster.name: Vega # Cluster name for your elasticsearch  
- node.name: Virgo # Node name for your elasticsearch   
+ node.name: Virgo # Node name for your elasticsearch  
  network.host: localhost  
  http:port: 9200``
 * Save your changes.  
@@ -135,7 +123,7 @@ you will see the following output:
   "tagline" : "You Know, for Search"  
 }``  
 ##### STEP 6: #####
-* Configuring kibana:  
+##### Configuring kibana:  #####
 * Go to the kibana directory  
 * Open config/kibana.yml in an editor  
 ``nano config/kibana.yml``  
