@@ -55,25 +55,23 @@ https://www.elastic.co/downloads/beats/filebeat
     ``nano filebeat.yml``  
 ``filebeat.prospectors:  
   type: log  
-  # Change to true to enable this prospector configuration   
   enabled: true  
-  # Paths that should be crawled and fetched. Glob based paths.  
   paths:  
-  /var/log/*.log # Absolute path to the file or files from where you want to import logs into logstash.  
+  -/var/log/*.log # Absolute path to the file or files from where you want to import logs into logstash.  
   ##Multiline options  
   multiline.pattern: ^[0-9]{2}-(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Sept|Oct (?:ober)?|Nov(?:ember)?|Dec(?:ember)?)-[0-9]{4} (this will match the timestamp, which is begininng of every newline)  
   multiline.negate: true  
   multiline.match: after  
   #--------------------Logsatsh output--------------------------  
   output.logstash:  
-	hosts: [“localhost:5044”]``
+	hosts: ["localhost:5044"]``
 * Save your changes.  
 * At the data source machine, run Filebeat with the following command:  
 ``./filebeat -e -c filebeat.yml ``  
 * Filebeat will attempt to connect on port 5044. Until Logstash starts with an active Beats plugin, there won’t be any answer on that port, so any messages you see regarding failure to connect on that port are normal for now.  
 * Filebeat stores the state of each file it harvests in the registry. However, if you do need to force Filebeat to read the log file from   scratch. To do this, go to the terminal window where Filebeat is running and press Ctrl+C to shut down Filebeat. Then delete the Filebeat   registry file. For example, run:  
 ``sudo rm data/registry``  
-Or take help about multiline option from [filebeat multiline](https://www.elastic.co/guide/en/beats/filebeat/current/multiline-examples.html)  
+Or take help about multiline option from [filebeat multiline.](https://www.elastic.co/guide/en/beats/filebeat/current/multiline-examples.html)  
 ##### STEP 4: #####
 * STASHING YOUR FIRST EVENT:  
 First, let’s test your Logstash installation by running the most basic Logstash pipeline.  
@@ -83,51 +81,18 @@ To test your Logstash installation, run the most basic Logstash pipeline. For ex
 ``./bin/logstash -e  ‘input { stdin {} } output { stdout {} }’``  
 * After starting Logstash, wait until you see "Pipeline main started" and then enter hello world at the command prompt.  
 you will see the following output:
-``helloworld
-{
-      "@version" => "1",
-    "@timestamp" => 2018-05-07T06:55:29.608Z,
-       "message" => "helloworld",
-          "host" => "anshul-HP-Notebook"
+``helloworld  
+{  
+      "@version" => "1",  
+    "@timestamp" => 2018-05-07T06:55:29.608Z,  
+       "message" => "helloworld",  
+          "host" => "anshul-HP-Notebook"  
 }``  
 * CONFIGURING LOGSTASH FOR FILEBEAT INPUT:  
 * Next, you have to create Logstash configuration pipeline that uses Beats input plugin to receive events from Beats.  
 ``cd logstash-6.2.4``  
 ``nano first_pipeline.conf``  
-* Add the following lines to first_pipeline.conf  
-```input {  
-        beats {  
-        port => 5044  
-        type => "tomcat"
-        }
-}
-filter {
-   if [type] == "tomcat" {
-        if "_grokparsefailure" in [tags] {
-           drop { }
-        }
-        grok {
-         patterns_dir => "/home/anshul/Downloads/logstash-6.2.4/patterns"
-         match => [ "message", "%{MYTIME:logTime} %{LOGLEVEL:logLevel} %{EVERYTHING:logMsg}" ]
-        }
- date {
-        locale => "en"
-        match => ["logTime", "dd-MMM-yyyy HH:mm:ss.SSS", "ISO8601"]
-        }
-    }
-}
-output {
-   if [type] == 'tomcat' {
-     elasticsearch {
-     hosts => ["localhost:9200"]
-     user => elastic
-     password => <pwd>
-     manage_template => false
-     index => "logstash-cata-date-%{+YYYY.MM.dd}"
-}
-}
-stdout {codec => rubydebug} # for debugging purpose.
-}```  
+* [first_pipeline.conf](https://raw.githubusercontent.com/Anshul14Sharma/Tomcat-ELK-stack/master/first-pipeline.conf)  
 * Save your changes.  
 * Now, to match the pattern defined in filter we have to provide a file with all grok patterns in it.  
 * Create the directory patterns and inside that create file grok-patterns.txt and add the contents from the link below to the file grok-patterns.txt  
@@ -154,21 +119,21 @@ stdout {codec => rubydebug} # for debugging purpose.
 ``./bin/elasticsearh``  
 * Point your browser at ``http://localhost:9200`` or ``curl -u username:password -XGET ‘localhost:9200?pretty’``  
 * Following output will appear:  
-``{
-  "name" : "Virgo",
-  "cluster_name" : "Vega",
-  "cluster_uuid" : "p6yFcOePQjWzVJ1NCjcawQ",
-  "version" : {
-    "number" : "6.2.4",
-    "build_hash" : "ccec39f",
-    "build_date" : "2018-04-12T20:37:28.497551Z",
-    "build_snapshot" : false,
-    "lucene_version" : "7.2.1",
-    "minimum_wire_compatibility_version" : "5.6.0",
-    "minimum_index_compatibility_version" : "5.0.0"
-  },
-  "tagline" : "You Know, for Search"
-}``
+``{  
+  "name" : "Virgo",  
+  "cluster_name" : "Vega",  
+  "cluster_uuid" : "p6yFcOePQjWzVJ1NCjcawQ",  
+  "version" : {  
+    "number" : "6.2.4",  
+    "build_hash" : "ccec39f",  
+    "build_date" : "2018-04-12T20:37:28.497551Z",  
+    "build_snapshot" : false,  
+    "lucene_version" : "7.2.1",  
+    "minimum_wire_compatibility_version" : "5.6.0",  
+    "minimum_index_compatibility_version" : "5.0.0"  
+  },  
+  "tagline" : "You Know, for Search"  
+}``  
 ##### STEP 6: #####
 * Configuring kibana:  
 * Go to the kibana directory  
