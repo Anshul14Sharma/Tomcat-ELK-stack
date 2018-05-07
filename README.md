@@ -44,7 +44,7 @@ https://www.elastic.co/downloads/beats/filebeat
 * Add credentials to the kibana.yml file:  
 ``elasticsearch.username: "kibana"``  
 ``elasticsearch.password:  "<pwd>"``  
-* <pwd> is the password for the kibana set previously for elasticsearch.  
+* ``<pwd>`` is the password for the kibana set previously for elasticsearch.  
 * Start kibana:  
 ``./bin/kibana``  
 ##### STEP 3: #####
@@ -70,14 +70,16 @@ To test your Logstash installation, run the most basic Logstash pipeline. For ex
 ``./bin/logstash -e  ‘input { stdin {} } output { stdout {} }’``  
 * After starting Logstash, wait until you see "Pipeline main started" and then enter hello world at the command prompt.  
 you will see the following output:
-``helloworld  
+``helloworld``  
+```json
 {  
       "@version" => "1",  
     "@timestamp" => 2018-05-07T06:55:29.608Z,  
        "message" => "helloworld",  
-          "host" => "anshul-HP-Notebook"  
-}``  
-* CONFIGURING LOGSTASH FOR FILEBEAT INPUT:  
+          "host" => "anshul-HP-Notebook"   
+}  
+```  
+##### CONFIGURING LOGSTASH FOR FILEBEAT INPUT:  #####
 * Next, you have to create Logstash configuration pipeline that uses Beats input plugin to receive events from Beats.  
 ``cd logstash-6.2.4``  
 ``nano first_pipeline.conf``  
@@ -108,7 +110,8 @@ you will see the following output:
 ``./bin/elasticsearh``  
 * Point your browser at ``http://localhost:9200`` or ``curl -u username:password -XGET ‘localhost:9200?pretty’``  
 * Following output will appear:  
-``{  
+```json
+{  
   "name" : "Virgo",  
   "cluster_name" : "Vega",  
   "cluster_uuid" : "p6yFcOePQjWzVJ1NCjcawQ",  
@@ -122,7 +125,8 @@ you will see the following output:
     "minimum_index_compatibility_version" : "5.0.0"  
   },  
   "tagline" : "You Know, for Search"  
-}``  
+}  
+```  
 ##### STEP 6: #####
 ##### Configuring kibana:  #####
 * Go to the kibana directory  
