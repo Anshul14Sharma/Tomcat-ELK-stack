@@ -13,7 +13,7 @@ BASE16FLOAT \b(?<![0-9A-Fa-f.])(?:[+-]?(?:0x)?(?:(?:[0-9A-Fa-f]+(?:\.[0-9A-Fa-f]
 
 POSINT \b(?:[1-9][0-9]*)\b
 NONNEGINT \b(?:[0-9]+)\b
-WORD \b\w+\b
+WORD \b\w+.\b
 NOTSPACE \S+
 SPACE \s*
 DATA .*?
@@ -105,3 +105,17 @@ LOGLEVEL ([Aa]lert|ALERT|[Tt]race|TRACE|[Dd]ebug|DEBUG|[Nn]otice|NOTICE|[Ii]nfo|
 EVERYTHING (.*)
 SSS (?:[\d]{3})
 MYTIME %{MONTHDAY}-%{MONTH}-%{YEAR} %{HOUR}:%{MINUTE}:%{SECOND}.%{SSS}
+
+JAVACLASS (?:[a-zA-Z$_][a-zA-Z$_0-9]*\.)*[a-zA-Z$_][a-zA-Z$_0-9]*
+JAVALOGMESSAGE (.*)
+
+# MMM dd, yyyy HH:mm:ss eg: Jan 9, 2014 7:13:13 AM
+CATALINA_DATESTAMP %{MONTH} %{MONTHDAY}, 20%{YEAR} %{HOUR}:?%{MINUTE}(?::?%{SECOND}) (?:AM|PM)
+CUSTOM_WARNINGLEVEL (^SEVERE:)|(^INFO:)|(^WARNING:)|(^ERROR:)|(^DEBUG:)|(^Error:)
+CUSTOM_TRACE_ERROR (^.+Error:)
+CUSTOM_TRACE_EXCEPTION (^java.+Exception)|(^.+Exception.+)|(^.+Exception: .+)
+CUSTOM_TRACE_CAUSED_BY (^\s*Caused by:.+)
+CUSTOM_TEXT (?:[A-Za-z_.-]+)
+CUSTOM_TRACE_OTHERS (^\s+at .+)|(^\s+... \d+ more)
+CUSTOM_CATALINALOG %{MYTIME:timestamp} \[%{WORD:main}\] %{JAVACLASS:class} %{JAVALOGMESSAGE:messageText}
+CUSTOM (?:[A-Za-z0-9_. -]+)
